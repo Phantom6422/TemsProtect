@@ -2,7 +2,7 @@
 
 TemsProtect is a fast block-logging, rollback, restore and anti-griefing plugin for **Paper 26.3** and the wider Paper/Purpur 26.x line. It is a native Paper plugin (`paper-plugin.yml`), so Paper lists it under **Paper Plugins** in `/plugins`. It keeps CoreProtect's proven storage engine and command set while adding a TemsProtect-branded command, permission namespace, configuration folder and an opt-in GitHub update check.
 
-> A rebranded fork of [CoreProtect](https://github.com/PlayPro/CoreProtect) by Intelli and the CoreProtect contributors, maintained by [Phantom6422](https://github.com/Phantom6422) for internal use. The original project credit and the Artistic License 2.0 are retained.
+> A rebranded fork of [CoreProtect](https://github.com/PlayPro/CoreProtect) by Intelli and the CoreProtect contributors, maintained by [Phantom6422](https://github.com/Phantom6422) for [PhantomsNetwork](https://phantomsnetwork.org) internal use. The original project credit and the Artistic License 2.0 are retained.
 
 ## Install
 
