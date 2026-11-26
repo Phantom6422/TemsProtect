@@ -1,3 +1,12 @@
+26.3.2 - Native Paper plugin
+
+- Replace `plugin.yml` with `paper-plugin.yml`; Paper now lists TemsProtect under **Paper Plugins** in `/plugins`
+- Register `/temsprotect`, `/tems`, `/co`, `/core` and `/coreprotect` through Paper's command API
+- Move DuckDB library loading to a Paper `PluginLoader` using Paper's Maven mirror
+- Declare WorldEdit, FastAsyncWorldEdit and AdvancedChests as optional Paper plugin dependencies
+- Remove the `plugin.yml` branch resource; use the release branch internally
+- Update README and platform requirements for the Paper plugin format
+
 26.3.1 - Packaging and CI hardening
 
 - Exclude duplicate SLF4J and JSpecify classes from the shaded jar; Paper provides them at runtime

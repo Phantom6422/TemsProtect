@@ -3,14 +3,12 @@ package net.coreprotect.services;
 import java.io.File;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.coreprotect.CoreProtect;
-import net.coreprotect.command.CommandHandler;
+import net.coreprotect.command.CommandRegistration;
 import net.coreprotect.command.PurgeCommand;
-import net.coreprotect.command.TabHandler;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.language.Language;
@@ -96,21 +94,8 @@ public class PluginInitializationService {
      * @param plugin
      *            The TemsProtect plugin instance
      */
-    private static void registerCommands(JavaPlugin plugin) {
-        TabHandler tabHandler = new TabHandler();
-        registerCommand(plugin, "temsprotect", tabHandler);
-        registerCommand(plugin, "coreprotect", tabHandler);
-        registerCommand(plugin, "core", tabHandler);
-        registerCommand(plugin, "co", tabHandler);
-    }
-
-    private static void registerCommand(JavaPlugin plugin, String name, TabHandler tabHandler) {
-        PluginCommand command = plugin.getCommand(name);
-        if (command == null) {
-            return;
-        }
-        command.setExecutor(CommandHandler.getInstance());
-        command.setTabCompleter(tabHandler);
+    private static void registerCommands(CoreProtect plugin) {
+        CommandRegistration.register(plugin);
     }
 
     /**

@@ -1,38 +1,27 @@
 name: TemsProtect
+version: '${version}'
 main: net.coreprotect.CoreProtect
-version: ${version}
-branch: ${branch}
-api-version: 1.16
-folia-supported: true
-website: https://github.com/Phantom6422/TemsProtect
-authors: [Phantom6422, Intelli]
-softdepend: [WorldEdit]
+loader: net.coreprotect.TemsProtectPluginLoader
+api-version: '26.1'
 description: >
              Fast block logging, rollback, restore and anti-griefing for Paper servers.
-libraries:
-  - org.duckdb:duckdb_jdbc:${duckdbVersion}
-commands:
-  temsprotect:
-    description: Utilize TemsProtect
-    permission: temsprotect.co
-    permission-message: §3TemsProtect §f- You do not have permission to do that.
-    usage: /<command> <params>
-    aliases: [tems]
-  co:
-    description: Utilize TemsProtect
-    permission: temsprotect.co
-    permission-message: §3TemsProtect §f- You do not have permission to do that.
-    usage: /<command> <params>
-  core:
-    description: Legacy CoreProtect command alias
-    permission: coreprotect.core
-    permission-message: §3TemsProtect §f- You do not have permission to do that.
-    usage: /<command> <params>
-  coreprotect:
-    description: Legacy CoreProtect command alias
-    permission: coreprotect.coreprotect
-    permission-message: §3TemsProtect §f- You do not have permission to do that.
-    usage: /<command> <params>
+authors: [Phantom6422, Intelli]
+website: https://github.com/Phantom6422/TemsProtect
+load: POSTWORLD
+dependencies:
+  server:
+    WorldEdit:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    FastAsyncWorldEdit:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    AdvancedChests:
+      load: BEFORE
+      required: false
+      join-classpath: true
 permissions:
     temsprotect.*:
         description: Gives access to all TemsProtect actions and commands

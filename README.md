@@ -1,14 +1,14 @@
 # TemsProtect
 
-TemsProtect is a fast block-logging, rollback, restore and anti-griefing plugin for **Paper 26.3** and the wider Paper/Purpur 26.x line. It keeps CoreProtect's proven storage engine and command set while adding a TemsProtect-branded command, permission namespace, configuration folder and an opt-in GitHub update check.
+TemsProtect is a fast block-logging, rollback, restore and anti-griefing plugin for **Paper 26.3** and the wider Paper/Purpur 26.x line. It is a native Paper plugin (`paper-plugin.yml`), so Paper lists it under **Paper Plugins** in `/plugins`. It keeps CoreProtect's proven storage engine and command set while adding a TemsProtect-branded command, permission namespace, configuration folder and an opt-in GitHub update check.
 
 > A rebranded fork of [CoreProtect](https://github.com/PlayPro/CoreProtect) by Intelli and the CoreProtect contributors, maintained by [Phantom6422](https://github.com/Phantom6422) for [PhantomsNetwork](https://phantomsnetwork.org) internal use. The original project credit and the Artistic License 2.0 are retained.
 
 ## Install
 
-1. Use **Java 25** (required by Paper 26.x) and a Paper or Purpur 26.3 server.
+1. Use **Java 25** (required by Paper 26.x) and a Paper or Purpur 26.1+ server.
 2. Download the [latest release](https://github.com/Phantom6422/TemsProtect/releases/latest) and place `TemsProtect-<version>.jar` in `plugins/`.
-3. Start the server. The plugin creates `plugins/TemsProtect/`.
+3. Start the server. Paper loads TemsProtect as a **Paper plugin** and the plugin creates `plugins/TemsProtect/`.
 
 If an existing `plugins/CoreProtect/` folder is present, it is moved to `plugins/TemsProtect/` on first start. Existing tables use the `co_` prefix and are opened as-is, so no database migration is required.
 
@@ -18,8 +18,8 @@ If an existing `plugins/CoreProtect/` folder is present, it is moved to `plugins
 
 - Paper 26.3 (primary target, built against Paper API `26.3.build.262-stable`)
 - Paper/Purpur 26.1 and 26.2
-- Paper 26.x on Folia (`folia-supported: true`)
-- Older Paper/Spigot 1.16.5+ builds remain supported on a best-effort basis; they are not the CI target.
+- Paper 26.x on Folia (best effort)
+- Spigot, Bukkit and Fabric are not supported. Older Paper versions below 26.1 are not supported by this Paper plugin build.
 
 ## Commands
 

@@ -7,7 +7,7 @@ plugins {
 
 defaultTasks("shadowJar")
 
-version = providers.gradleProperty("buildVersion").orElse("26.3.1").get()
+version = providers.gradleProperty("buildVersion").orElse("26.3.2").get()
 group = "net.temsprotect"
 
 java {
@@ -62,12 +62,11 @@ tasks.withType<Test>().configureEach {
 }
 
 tasks.processResources {
-    filesMatching("plugin.yml") {
-        expand(
-            "version" to project.version,
-            "branch" to (providers.gradleProperty("buildBranch").orElse("release").get()),
-            "duckdbVersion" to libs.versions.duckdb.get()
-        )
+    filesMatching("paper-plugin.yml") {
+        expand("version" to project.version)
+    }
+    filesMatching("temsprotect.properties") {
+        expand("duckdbVersion" to libs.versions.duckdb.get())
     }
 }
 

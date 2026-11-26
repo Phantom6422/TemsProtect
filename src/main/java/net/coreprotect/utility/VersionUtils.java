@@ -1,12 +1,8 @@
 package net.coreprotect.utility;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -166,37 +162,9 @@ public class VersionUtils {
     }
 
     public static String getBranch() {
-        String branch = "";
-        try {
-            CoreProtect instance = CoreProtect.getInstance();
-            if (instance == null) {
-                return "";
-            }
-
-            try (InputStream stream = instance.getClass().getResourceAsStream("/plugin.yml")) {
-                if (stream == null) {
-                    return "";
-                }
-                try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
-                    branch = YamlConfiguration.loadConfiguration(reader).getString("branch");
-                }
-            }
-
-            if (branch == null || branch.equals("${project.branch}")) {
-                branch = "";
-            }
-            if (branch.startsWith("-")) {
-                branch = branch.substring(1);
-            }
-            if (branch.length() > 0) {
-                branch = "-" + branch;
-            }
-        }
-        catch (Exception e) {
-            ErrorReporter.report(e);
-        }
-
-        return branch;
+        // Paper plugin metadata has no branch field. TemsProtect builds from the
+        // release branch; development branches can override this constant locally.
+        return "-release";
     }
 
     public static boolean newVersion(Integer[] oldVersion, Integer[] currentVersion) {
