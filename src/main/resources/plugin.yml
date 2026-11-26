@@ -1,0 +1,267 @@
+name: TemsProtect
+main: net.coreprotect.CoreProtect
+version: ${version}
+branch: ${branch}
+api-version: 1.16
+folia-supported: true
+website: https://github.com/Phantom6422/TemsProtect
+authors: [Phantom6422, Intelli]
+softdepend: [WorldEdit]
+description: >
+             Fast block logging, rollback, restore and anti-griefing for Paper servers.
+libraries:
+  - org.duckdb:duckdb_jdbc:${duckdbVersion}
+commands:
+  temsprotect:
+    description: Utilize TemsProtect
+    permission: temsprotect.co
+    permission-message: §3TemsProtect §f- You do not have permission to do that.
+    usage: /<command> <params>
+    aliases: [tems]
+  co:
+    description: Utilize TemsProtect
+    permission: temsprotect.co
+    permission-message: §3TemsProtect §f- You do not have permission to do that.
+    usage: /<command> <params>
+  core:
+    description: Legacy CoreProtect command alias
+    permission: coreprotect.core
+    permission-message: §3TemsProtect §f- You do not have permission to do that.
+    usage: /<command> <params>
+  coreprotect:
+    description: Legacy CoreProtect command alias
+    permission: coreprotect.coreprotect
+    permission-message: §3TemsProtect §f- You do not have permission to do that.
+    usage: /<command> <params>
+permissions:
+    temsprotect.*:
+        description: Gives access to all TemsProtect actions and commands
+        default: op
+        children:
+            temsprotect.rollback: true
+            temsprotect.restore: true
+            temsprotect.inspect: true
+            temsprotect.help: true
+            temsprotect.purge: true
+            temsprotect.lookup: true
+            temsprotect.teleport: true
+            temsprotect.reload: true
+            temsprotect.status: true
+            temsprotect.consumer: true
+            temsprotect.networking: true
+            temsprotect.migrate: true
+            temsprotect.give: false
+    temsprotect.co:
+        description: Has permission to access the TemsProtect command
+        default: true
+    temsprotect.lookup:
+        description: Has permission to use the lookup command
+        default: op
+        children:
+            temsprotect.lookup.near: true
+            temsprotect.lookup.chat: true
+            temsprotect.lookup.command: true
+            temsprotect.lookup.session: true
+            temsprotect.lookup.username: true
+            temsprotect.lookup.block: true
+            temsprotect.lookup.sign: true
+            temsprotect.lookup.click: true
+            temsprotect.lookup.container: true
+            temsprotect.lookup.inventory: true
+            temsprotect.lookup.item: true
+            temsprotect.lookup.kill: true
+            temsprotect.lookup.spawn: true
+            coreprotect.lookup: true
+    temsprotect.lookup.near:
+        description: Has permission to lookup nearby changes via the near command
+        default: op
+        children: { coreprotect.lookup.near: true }
+    temsprotect.lookup.chat:
+        description: Has permission to lookup chat messages
+        default: op
+        children: { coreprotect.lookup.chat: true }
+    temsprotect.lookup.command:
+        description: Has permission to lookup player commands
+        default: op
+        children: { coreprotect.lookup.command: true }
+    temsprotect.lookup.session:
+        description: Has permission to lookup player sessions
+        default: op
+        children: { coreprotect.lookup.session: true }
+    temsprotect.lookup.username:
+        description: Has permission to lookup player username changes
+        default: op
+        children: { coreprotect.lookup.username: true }
+    temsprotect.lookup.block:
+        description: Has permission to lookup block data
+        default: op
+        children: { coreprotect.lookup.block: true }
+    temsprotect.lookup.sign:
+        description: Has permission to lookup sign messages
+        default: op
+        children: { coreprotect.lookup.sign: true }
+    temsprotect.lookup.click:
+        description: Has permission to lookup player interactions
+        default: op
+        children: { coreprotect.lookup.click: true }
+    temsprotect.lookup.container:
+        description: Has permission to lookup container transactions
+        default: op
+        children: { coreprotect.lookup.container: true }
+    temsprotect.lookup.inventory:
+        description: Has permission to lookup inventory transactions
+        default: op
+        children: { coreprotect.lookup.inventory: true }
+    temsprotect.lookup.item:
+        description: Has permission to lookup item transactions
+        default: op
+        children: { coreprotect.lookup.item: true }
+    temsprotect.lookup.kill:
+        description: Has permission to lookup entity kills
+        default: op
+        children: { coreprotect.lookup.kill: true }
+    temsprotect.lookup.spawn:
+        description: Has permission to lookup entity spawns
+        default: op
+        children: { coreprotect.lookup.spawn: true }
+    temsprotect.rollback:
+        description: Has permission to perform rollbacks
+        default: op
+        children: { coreprotect.rollback: true }
+    temsprotect.restore:
+        description: Has permission to perform restores
+        default: op
+        children: { coreprotect.restore: true }
+    temsprotect.inspect:
+        description: Has permission to use the inspector
+        default: op
+        children: { coreprotect.inspect: true }
+    temsprotect.help:
+        description: Has permission to use the help command
+        default: op
+        children: { coreprotect.help: true }
+    temsprotect.purge:
+        description: Has permission to use the purge command
+        default: op
+        children: { coreprotect.purge: true }
+    temsprotect.teleport:
+        description: Has permission to use the teleport command
+        default: op
+        children: { coreprotect.teleport: true }
+    temsprotect.reload:
+        description: Has permission to use the reload command
+        default: op
+        children: { coreprotect.reload: true }
+    temsprotect.status:
+        description: Has permission to use the status command
+        default: op
+        children: { coreprotect.status: true }
+    temsprotect.consumer:
+        description: Has permission to use the consumer command
+        default: op
+        children: { coreprotect.consumer: true }
+    temsprotect.networking:
+        description: Has permission to use the networking API
+        default: op
+        children: { coreprotect.networking: true }
+    temsprotect.give:
+        description: Has permission to use the give command
+        default: false
+        children: { coreprotect.give: true }
+    temsprotect.migrate:
+        description: Has permission to migrate the database backend
+        default: op
+        children: { coreprotect.migrate: true }
+    coreprotect.*:
+        description: Legacy alias for temsprotect.*
+        default: op
+        children:
+            temsprotect.*: true
+    coreprotect.co:
+        description: Legacy alias for temsprotect.co
+        default: true
+        children: { temsprotect.co: true }
+    coreprotect.core:
+        description: Legacy alias for the /core command
+        default: false
+    coreprotect.coreprotect:
+        description: Legacy alias for the /coreprotect command
+        default: false
+    coreprotect.lookup:
+        description: Legacy alias for temsprotect.lookup
+        default: op
+    coreprotect.lookup.near:
+        description: Legacy alias for temsprotect.lookup.near
+        default: op
+    coreprotect.lookup.chat:
+        description: Legacy alias for temsprotect.lookup.chat
+        default: op
+    coreprotect.lookup.command:
+        description: Legacy alias for temsprotect.lookup.command
+        default: op
+    coreprotect.lookup.session:
+        description: Legacy alias for temsprotect.lookup.session
+        default: op
+    coreprotect.lookup.username:
+        description: Legacy alias for temsprotect.lookup.username
+        default: op
+    coreprotect.lookup.block:
+        description: Legacy alias for temsprotect.lookup.block
+        default: op
+    coreprotect.lookup.sign:
+        description: Legacy alias for temsprotect.lookup.sign
+        default: op
+    coreprotect.lookup.click:
+        description: Legacy alias for temsprotect.lookup.click
+        default: op
+    coreprotect.lookup.container:
+        description: Legacy alias for temsprotect.lookup.container
+        default: op
+    coreprotect.lookup.inventory:
+        description: Legacy alias for temsprotect.lookup.inventory
+        default: op
+    coreprotect.lookup.item:
+        description: Legacy alias for temsprotect.lookup.item
+        default: op
+    coreprotect.lookup.kill:
+        description: Legacy alias for temsprotect.lookup.kill
+        default: op
+    coreprotect.lookup.spawn:
+        description: Legacy alias for temsprotect.lookup.spawn
+        default: op
+    coreprotect.rollback:
+        description: Legacy alias for temsprotect.rollback
+        default: op
+    coreprotect.restore:
+        description: Legacy alias for temsprotect.restore
+        default: op
+    coreprotect.inspect:
+        description: Legacy alias for temsprotect.inspect
+        default: op
+    coreprotect.help:
+        description: Legacy alias for temsprotect.help
+        default: op
+    coreprotect.purge:
+        description: Legacy alias for temsprotect.purge
+        default: op
+    coreprotect.teleport:
+        description: Legacy alias for temsprotect.teleport
+        default: op
+    coreprotect.reload:
+        description: Legacy alias for temsprotect.reload
+        default: op
+    coreprotect.status:
+        description: Legacy alias for temsprotect.status
+        default: op
+    coreprotect.consumer:
+        description: Legacy alias for temsprotect.consumer
+        default: op
+    coreprotect.networking:
+        description: Legacy alias for temsprotect.networking
+        default: op
+    coreprotect.give:
+        description: Legacy alias for temsprotect.give
+        default: false
+    coreprotect.migrate:
+        description: Legacy alias for temsprotect.migrate
+        default: op

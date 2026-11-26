@@ -1,0 +1,40 @@
+[versions]
+paper = "26.3.build.262-stable"
+fastasyncworldedit = "2.15.0"
+advancedchests = "3.2-BETA"
+hikari = "7.0.2"
+duckdb = "1.4.5.0"
+clickhouse = "0.10.0"
+log4j = "2.25.5"
+junit = "5.14.3"
+mockito = "5.23.0"
+mockbukkit = "3.133.2"
+sqlite = "3.53.0.0"
+mysql = "9.6.0"
+slf4j = "2.0.17"
+bytebuddy = "1.18.8"
+shadow = "9.4.3"
+
+[libraries]
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+fastasyncworldedit-core = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Core", version.ref = "fastasyncworldedit" }
+fastasyncworldedit-bukkit = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit", version.ref = "fastasyncworldedit" }
+advancedchests = { module = "com.github.DeadSilenceIV:AdvancedChestsAPI", version.ref = "advancedchests" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+duckdb = { module = "org.duckdb:duckdb_jdbc", version.ref = "duckdb" }
+clickhouse-jdbc = { module = "com.clickhouse:clickhouse-jdbc", version.ref = "clickhouse" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+mockbukkit = { module = "com.github.seeseemelk:MockBukkit-v1.21", version.ref = "mockbukkit" }
+sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
+mysql = { module = "com.mysql:mysql-connector-j", version.ref = "mysql" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+bytebuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "bytebuddy" }
+bytebuddy-agent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "bytebuddy" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

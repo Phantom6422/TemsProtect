@@ -1,0 +1,14 @@
+TemsProtect
+
+This product is a rebranded fork of CoreProtect, originally created by Intelli
+and the CoreProtect contributors (https://github.com/PlayPro/CoreProtect).
+
+The internal Java packages (net.coreprotect.*), the CoreProtectAPI class, the
+CoreProtectPreLogEvent class, the coreprotect:* plugin-message channels and the
+embedded database table prefix (co_) are retained for compatibility with
+existing plugins, client mods and databases.
+
+TemsProtect-specific changes are maintained by Phantom6422 for PhantomsNetwork.
+
+CoreProtect and TemsProtect are licensed under the Artistic License 2.0. See
+LICENSE.

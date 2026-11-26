@@ -1,0 +1,106 @@
+package net.coreprotect.listener.block;
+
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Scaffolding;
+import org.bukkit.entity.Player;
+
+import net.coreprotect.bukkit.BukkitAdapter;
+import net.coreprotect.model.BlockGroup;
+import net.coreprotect.thread.CacheHandler;
+
+public class BlockUtil {
+
+    public static final int NONE = 0;
+    public static final int TOP = 5;
+    public static final int BOTTOM = 6;
+
+    static boolean isFloatingScaffolding(BlockData blockData) {
+        if (!(blockData instanceof Scaffolding)) {
+            return false;
+        }
+        Scaffolding scaffolding = (Scaffolding) blockData;
+        int maxDistance = scaffolding.getMaximumDistance();
+        return maxDistance > 0 && scaffolding.getDistance() >= maxDistance;
+    }
+
+    static boolean verticalBreakScan(Player player, String user, Block block, Block scanBlock, Material scanType, int scanMin, Set<Block> recordedBlocks) {
+        if (!BlockGroup.VERTICAL.contains(scanType)) {
+            return false;
+        }
+
+        if (scanType != block.getType()) {
+            boolean trackTop = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType) || BlockGroup.TRACK_TOP.contains(scanType);
+            boolean trackBottom = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType) || BlockGroup.TRACK_BOTTOM.contains(scanType);
+            if ((!trackTop && scanMin == TOP) || (!trackBottom && scanMin == BOTTOM)) {
+                return false;
+            }
+        }
+
+        boolean top = BlockGroup.VERTICAL_TOP_BOTTOM.contains(scanType) || BlockGroup.VERTICAL_TOP.contains(scanType);
+        boolean bottom = BlockGroup.VERTICAL_TOP_BOTTOM.contains(scanType) || BlockGroup.VERTICAL_BOTTOM.contains(scanType);
+        if ((top && scanMin == TOP) || (bottom && scanMin == BOTTOM)) {
+            if (!BlockBreakListener.isAttached(block, scanBlock, scanMin)) {
+                return false;
+            }
+            if (recordedBlocks != null) {
+                recordedBlocks.add(scanBlock);
+            }
+            BlockBreakListener.processBlockBreak(player, user, scanBlock, true, (scanMin == BOTTOM ? TOP : BOTTOM), recordedBlocks);
+            return true;
+        }
+
+        return false;
+    }
+
+    public static Block gravityScan(Location location, Material type, String player) {
+        Block block = location.getBlock();
+        if (type.hasGravity() || type == Material.ARMOR_STAND) {
+            int x = location.getBlockX();
+            int y = location.getBlockY();
+            int z = location.getBlockZ();
+            World world = location.getWorld();
+            int yc = y - 1;
+            // user placing sand/gravel. Find the bottom block
+            int bottomfound = 0;
+            while (bottomfound == 0) {
+                if (yc < BukkitAdapter.ADAPTER.getMinHeight(world)) {
+                    block = world.getBlockAt(x, yc + 1, z);
+                    bottomfound = 1;
+                }
+                else {
+                    Block block_down = world.getBlockAt(x, yc, z);
+                    Material down = block_down.getType();
+                    if (!BukkitAdapter.ADAPTER.isInvisible(down) && !down.equals(Material.WATER) && !down.equals(Material.LAVA) && !down.equals(Material.SNOW)) {
+                        block = world.getBlockAt(x, yc + 1, z);
+                        bottomfound = 1;
+                    }
+                    else if (down == Material.WATER && type.name().endsWith("_CONCRETE_POWDER")) {
+                        block = world.getBlockAt(x, yc, z);
+                        bottomfound = 1;
+                    }
+                    else {
+                        Object[] data = CacheHandler.getBlockSource(world, x, yc, z);
+                        if (data != null) {
+                            Material t = (Material) data[2];
+                            if (type.equals(t) && type != Material.ARMOR_STAND) {
+                                block = world.getBlockAt(x, yc + 1, z);
+                                bottomfound = 1;
+                            }
+                        }
+                    }
+                    yc--;
+                }
+            }
+            CacheHandler.recordBlockSource(world, x, block.getY(), z, player, type);
+        }
+
+        return block;
+    }
+
+}

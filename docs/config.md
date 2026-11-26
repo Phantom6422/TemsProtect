@@ -1,0 +1,106 @@
+# Configuration
+
+The TemsProtect configuration file can be found within the TemsProtect folder, at `config.yml`.
+
+## Database Storage
+
+New installations use embedded DuckDB by default. Upgrading an existing SQLite or MySQL installation does not switch it to DuckDB: if `database-type` is absent, TemsProtect derives it from the existing legacy `use-mysql` setting and automatically writes the matching `sqlite` or `mysql` value. No manual change is required. Once present, `database-type` takes precedence over `use-mysql`, and changes take effect after `/co reload` or a restart.
+
+| Value | Storage | Requirements |
+| --- | --- | --- |
+| `duckdb` | Embedded columnar database; the default for new installations | TemsProtect 25.0+ |
+| `clickhouse` | External columnar database | TemsProtect 25.0+ and a reachable ClickHouse 26.1+ server |
+| `sqlite` | Embedded legacy relational database | None beyond TemsProtect |
+| `mysql` | External legacy relational database | A reachable MySQL server |
+
+The server downloads the DuckDB JDBC driver automatically as a plugin library, while the ClickHouse JDBC driver is packaged inside TemsProtect; neither requires manual driver installation. DuckDB includes its database engine, while ClickHouse requires a separate server.
+
+Changing `database-type` selects a separate dataset; it does not copy existing data. Use `/temsprotect migrate-db` (permission `temsprotect.migrate`) to migrate between backends. The target namespace must contain no TemsProtect data; DuckDB requires a new target file, and `database-lock` must remain enabled. See the [database migration guide](database-migration.md) for preparation and switchover instructions.
+
+### DuckDB
+
+The default settings are suitable for most servers:
+
+```yaml
+database-type: duckdb
+duckdb-memory-limit: 512MB
+duckdb-threads: 3
+duckdb-max-temp-directory-size: 10GB
+```
+
+DuckDB stores its data in `plugins/TemsProtect/database.duckdb`; TemsProtect manages it directly, so no DuckDB service is needed. `duckdb-memory-limit` controls the buffer manager, although total native memory can be higher, and `duckdb-threads` limits query threads. `duckdb-max-temp-directory-size` caps spill data without preallocating space or limiting the database file itself. Queries that exceed both memory and available spill space can fail.
+
+On a pristine installation where the TemsProtect data folder contains no existing files, TemsProtect verifies that DuckDB's native library can run before creating the database file. If the operating system, architecture, or native runtime is incompatible, TemsProtect records `database-type: sqlite` in the generated `config.yml`, logs a warning, and starts with SQLite instead. Existing or preconfigured installations and explicitly configured DuckDB databases never fall back automatically; an initialization error stops database startup so TemsProtect cannot silently open a separate empty history.
+
+### ClickHouse
+
+Configure the ClickHouse HTTP endpoint and credentials before selecting it:
+
+```yaml
+database-type: clickhouse
+table-prefix: co_
+clickhouse-host: 127.0.0.1
+clickhouse-port: 8123
+clickhouse-database: default
+clickhouse-username: default
+clickhouse-password: ""
+clickhouse-tls: false
+```
+
+Create the configured database first with a database engine that provides persistent UUID-backed table identities. `Atomic` is the normal choice for self-hosted ClickHouse and is the default there; for example, `CREATE DATABASE coreprotect ENGINE = Atomic`. TemsProtect checks this capability before creating any tables, then creates and validates its prefixed tables and views. The account needs permission to read `system.databases` and `system.tables`, create and read/write the TemsProtect objects, run mutations and partition drops, and drop or truncate purge-target tables. Server-wide database-creation permission is not required; `#optimize` additionally requires table optimization permission.
+
+To share a ClickHouse database and prefix, disable `database-lock` on every installation. Use the same TemsProtect version and direct endpoint to one physical ClickHouse server, with separate TemsProtect data directories. Load balancing across independent nodes, replicated tables, and distributed tables are unsupported. Synchronize system clocks; events from different installations within the same second have no guaranteed order. Use globally unique world names unless their coordinate histories should be combined.
+
+Players must log in with a UUID before UUID-less activity under a changed or reassigned name. UUIDs preserve account IDs across name changes and distinguish successive owners of a reused name. Name lookups use the latest UUID-bearing observation; ownership is unspecified when observations conflict within one second. Simultaneous name changes are unsupported. Cached names from other servers may remain until the player is observed locally or TemsProtect reloads.
+
+Purges require `database-lock`. Stop all installations sharing the database and prefix, enable the lock on the installation performing the purge, then restart or reload it before purging. Also stop all installations before migration. Migration updates only the initiating installation's configuration; update the others before restarting them.
+
+If an interrupted schema upgrade cannot resume from the original installation, follow the [ClickHouse upgrade handoff procedure](/clickhouse-upgrade-recovery/).
+
+## Per-World Configuration
+
+If you'd like to modify the logging settings for a specific world, simply do the following:
+
+1. Copy the config.yml file to the name of the world (e.g. world_nether.yml)
+2. In the new file, modify the logging settings as desired.
+3. Either restart your server, or type "/co reload" in-game.
+
+Secondary configuration files override the value specified in config.yml. If you leave an option out of a secondary configuration file, then the option specified in config.yml will be used.
+
+#### Examples
+* If you'd like to disable all logging for the End, copy the `config.yml` file to `world_the_end.yml` (matching the folder name for the world). Then, simply disable all logging options within the new file.
+* If you just want to disable entity death logging in the Nether, but keep all other logging options the same, simply create a file named `world_nether.yml` containing the text "rollback-entities: false".
+
+## Disabling Logging
+
+To disable logging for specific users, blocks or commands, simply do the following:
+
+1. In the TemsProtect plugin directory, create a file named `blacklist.txt`.
+2. Enter the names of the users, commands, blocks, or entities you'd like to disable logging for (each entry on a new line).
+3. Either restart your server, or type "/co reload" in-game.
+
+The blacklist supports disabling logs for:
+
+- Users, which includes Players and non-player users, such as "#creeper"
+- Commands, such as `/help`
+- Blocks, such as minecraft:stone. Only `block` actions are affected.
+- Entities, such as minecraft:creeper, which will disable logging the death for that entity. *Note: renamed entities will be logged even if blacklisted.*
+- Filters can also be specified for a particular user, by using the `@` symbol after the specific item, block, or entity namespaced ID. The format is `id@user`. This will filter all `block`, `kill`, `item` and `container` actions involving that particular block, item or mob, only when caused by the specified player or non-player user. 
+- Items and container actions are only affected by filtered blacklist entries, not by generic item or block IDs.
+
+*Please note that you must include the namespace (e.g. minecraft:) for blocks, entities and items.*
+
+An example blacklist.txt file would look like this:
+
+```text
+Notch ; User
+#tnt ; TNT explosions
+/help ; Help command
+minecraft:stone ; Stone blocks
+minecraft:creeper ; Creeper entity
+minecraft:shears@#dispenser ; Shears being dispensed
+```
+
+
+*Please note that to disable logging for blocks, TemsProtect v23+ is required.*
+*To disable logging for entities or to use filtering, TemsProtect v24+ is required.*

@@ -1,0 +1,66 @@
+package net.coreprotect.command;
+
+import java.util.Locale;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+
+import net.coreprotect.config.ConfigHandler;
+import net.coreprotect.consumer.Consumer;
+import net.coreprotect.language.Phrase;
+import net.coreprotect.language.Selector;
+import net.coreprotect.utility.Chat;
+import net.coreprotect.utility.Color;
+
+public class ConsumerCommand {
+
+    private ConsumerCommand() {
+        throw new IllegalStateException("Command class");
+    }
+
+    protected static void runCommand(final CommandSender player, boolean permission, String[] args) {
+        if (!permission) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_PERMISSION));
+            return;
+        }
+        if (!(player instanceof ConsoleCommandSender)) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.COMMAND_CONSOLE));
+            return;
+        }
+        if (ConfigHandler.converterRunning || ConfigHandler.migrationRunning) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.UPGRADE_IN_PROGRESS));
+            return;
+        }
+        if (ConfigHandler.purgeRunning) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_IN_PROGRESS));
+            return;
+        }
+        if (Consumer.isPersistenceHalted() || Consumer.isDatabaseReloadPaused()) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.DATABASE_BUSY));
+            return;
+        }
+
+        if (args.length == 2) {
+            String action = args[1].toLowerCase(Locale.ROOT);
+            boolean pauseCommand = (action.equals("pause") || action.equals("disable") || action.equals("stop"));
+            boolean resumeCommand = (action.equals("resume") || action.equals("enable") || action.equals("start"));
+
+            if (pauseCommand || resumeCommand) {
+                String selector = pauseCommand ? Selector.FIRST : Selector.SECOND;
+                if (ConfigHandler.pauseConsumer == pauseCommand) {
+                    Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.CONSUMER_ERROR, selector));
+                }
+                else if (Consumer.trySetManualPause(pauseCommand)) {
+                    Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.CONSUMER_TOGGLED, selector));
+                }
+                else {
+                    Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.DATABASE_BUSY));
+                }
+                return;
+            }
+        }
+
+        Chat.sendMessage(player, Color.DARK_AQUA + "TemsProtect " + Color.WHITE + "- " + Phrase.build(Phrase.MISSING_PARAMETERS, Color.WHITE, "/temsprotect consumer <pause|resume>"));
+    }
+
+}

@@ -1,0 +1,5 @@
+site_name: TemsProtect Documentation
+repo_url: https://github.com/Phantom6422/TemsProtect
+docs_dir: 'docs'
+extra_css:
+     - css/extra.css

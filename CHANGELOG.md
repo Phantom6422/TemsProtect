@@ -1,0 +1,17 @@
+26.3 - TemsProtect rebrand and Paper 26.3
+
+- Convert the build from Maven to Gradle (Kotlin DSL, version catalog, wrapper, Java 25 toolchain)
+- Rebrand the plugin, command, permissions, configuration folder, messages, documentation and release artifacts to TemsProtect
+- Compile against Paper API 26.3.build.262-stable and add the Paper 26.3 adapter
+- Track 26.3 shelf mushrooms, red shrubs, straw beds and cushion entities
+- Keep `net.coreprotect` packages, the `CoreProtectAPI` class and the `co_` table prefix for plugin and database compatibility
+- Add `/temsprotect` and `/tems` commands; keep `/co`, `/core` and `/coreprotect`
+- Add `temsprotect.*` permissions with automatic `coreprotect.*` legacy aliases
+- Migrate an existing `plugins/CoreProtect` data folder on first start
+- Remove bStats, donation-key licence checks, statistics uploads, remote error reporting and remote language translation
+- Replace the CoreProtect update endpoints with an opt-in, read-only GitHub release check (disabled by default)
+- Make update-alert and status threads daemon threads
+- Require Java 25 in the startup version check
+- Add JUnit 5 tests for version comparison and 26.x adapter version mapping
+- Add GitHub Actions build, test, Paper smoke test and tag-release workflows
+- Keep the Artistic License 2.0 and upstream credits

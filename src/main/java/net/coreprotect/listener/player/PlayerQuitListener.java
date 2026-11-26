@@ -1,0 +1,33 @@
+package net.coreprotect.listener.player;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import net.coreprotect.command.CommandHandler;
+import net.coreprotect.config.Config;
+import net.coreprotect.config.ConfigHandler;
+import net.coreprotect.consumer.Queue;
+
+public final class PlayerQuitListener implements Listener {
+
+    public static void queuePlayerQuit(Player player) {
+        if (Config.getConfig(player.getWorld()).PLAYER_SESSIONS) {
+            int time = (int) (System.currentTimeMillis() / 1000L);
+            Queue.queuePlayerQuit(player, time);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        queuePlayerQuit(player);
+        String playerName = player.getName();
+        ConfigHandler.clearPlayerState(playerName);
+        PlayerInteractListener.clearInspectorEvent(player.getUniqueId());
+        CommandHandler.clearVersionAlert(playerName);
+    }
+
+}
