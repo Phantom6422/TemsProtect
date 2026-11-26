@@ -67,7 +67,8 @@ public final class CommandRegistration {
 
         @Override
         public Collection<String> suggest(CommandSourceStack source, String[] args) {
-            Collection<String> suggestions = tabHandler.onTabComplete(source.getSender(), delegate, name, args);
+            String[] suggestionArgs = args.length == 0 ? new String[] { "" } : args;
+            Collection<String> suggestions = tabHandler.onTabComplete(source.getSender(), delegate, name, suggestionArgs);
             return suggestions == null ? List.of() : suggestions;
         }
 

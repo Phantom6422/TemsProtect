@@ -7,7 +7,7 @@ plugins {
 
 defaultTasks("shadowJar")
 
-version = providers.gradleProperty("buildVersion").orElse("26.3.2").get()
+version = providers.gradleProperty("buildVersion").orElse("26.3.3").get()
 group = "net.temsprotect"
 
 java {

@@ -1,3 +1,9 @@
+26.3.3 - Tab completion fix
+
+- Normalize Paper's empty suggestion arguments so first-level suggestions appear after `/temsprotect `
+- Allow tab completion for console senders as well as players
+- Add regression tests for first-level and help-topic suggestions
+
 26.3.2 - Native Paper plugin
 
 - Replace `plugin.yml` with `paper-plugin.yml`; Paper now lists TemsProtect under **Paper Plugins** in `/plugins`
