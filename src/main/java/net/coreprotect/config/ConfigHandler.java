@@ -106,7 +106,7 @@ public class ConfigHandler {
     public static final String COMMUNITY_EDITION = "Community Edition";
     public static final String JAVA_VERSION = "25.0";
     public static final String MINECRAFT_VERSION = "1.16.5";
-    public static final String PATCH_VERSION = "26.3";
+    public static final String PATCH_VERSION = "26.3.1";
     public static final String LATEST_VERSION = "26.3";
     private static final String DEFAULT_SQLITE_DATABASE = "database.db";
     private static final Pattern TABLE_PREFIX_PATTERN = Pattern.compile("[A-Za-z_][A-Za-z0-9_]*");

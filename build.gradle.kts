@@ -7,7 +7,7 @@ plugins {
 
 defaultTasks("shadowJar")
 
-version = providers.gradleProperty("buildVersion").orElse("26.3").get()
+version = providers.gradleProperty("buildVersion").orElse("26.3.1").get()
 group = "net.temsprotect"
 
 java {
@@ -43,12 +43,7 @@ dependencies {
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.junit.jupiter)
     testImplementation(libs.paper.api)
-    testImplementation(libs.sqlite)
-    testImplementation(libs.mysql)
-    testImplementation(libs.slf4j.simple)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -89,6 +84,9 @@ tasks.withType<ShadowJar>().configureEach {
     exclude("META-INF/*.SF")
     exclude("META-INF/*.DSA")
     exclude("META-INF/*.RSA")
+    // Paper provides SLF4J and JSpecify annotations; do not shadow duplicates.
+    exclude("org/slf4j/**")
+    exclude("org/jspecify/**")
 
     relocate("com.zaxxer", "net.coreprotect.libs.hikari")
 }

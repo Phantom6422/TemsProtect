@@ -1,3 +1,10 @@
+26.3.1 - Packaging and CI hardening
+
+- Exclude duplicate SLF4J and JSpecify classes from the shaded jar; Paper provides them at runtime
+- Remove unused test dependencies from the build
+- Add a Dependabot cooldown and manual zizmor runs; zizmor now passes
+- Keep the plugin version at 26.3.1 while the internal database schema version remains 2.26.3
+
 26.3 - TemsProtect rebrand and Paper 26.3
 
 - Convert the build from Maven to Gradle (Kotlin DSL, version catalog, wrapper, Java 25 toolchain)
