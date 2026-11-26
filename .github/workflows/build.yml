@@ -30,7 +30,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up JDK 25
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           java-version: '25'
           distribution: 'temurin'
@@ -50,7 +50,7 @@ jobs:
         run: ./gradlew clean build ${VERSION:+-PbuildVersion=$VERSION}
 
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: TemsProtect
           path: build/libs/TemsProtect-*.jar
@@ -67,7 +67,7 @@ jobs:
       actions: write
     steps:
       - name: Download built JAR
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: TemsProtect
           path: plugin-jar/
@@ -94,7 +94,7 @@ jobs:
           curl -fsSL "$JAR_URL" -o smoke-server/paper.jar
 
       - name: Set up JDK 25
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           java-version: '25'
           distribution: 'temurin'
@@ -149,7 +149,7 @@ jobs:
 
       - name: Upload server log
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: paper-smoke-log-${{ matrix.mc_version }}
           path: smoke-server/server.log
@@ -165,7 +165,7 @@ jobs:
       actions: read
     steps:
       - name: Download built JAR
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: TemsProtect
           path: plugin-jar/
