@@ -1,6 +1,6 @@
 # Security Policy
 
-TemsProtect is maintained for **PhantomsNetwork internal use only**. Public support is not provided. Security reports are still welcome and will be handled privately.
+TemsProtect is maintained for **internal use only**. Public support is not provided. Security reports are still welcome and will be handled privately.
 
 ## Reporting a vulnerability
 
